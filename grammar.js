@@ -37,7 +37,7 @@ module.exports = grammar({
                 seq(
                     choice($.meta_ident, alias($.word, $.ident), alias($._ident, $.ident)),
                     ':',
-                    optional(seq('(', $.ident, ')')),
+                    optional(choice(seq('(', $.ident, ')'), $.meta)),
                 ),
                 seq(
                     'label',
@@ -46,8 +46,14 @@ module.exports = grammar({
             ),
         const: $ => seq('const', field('name', $.word), field('value', $._tc_expr)),
         instruction: $ => seq(field('kind', $.word), choice(sep(',', $._expr), repeat($._tc_expr))),
+        _expr: $ => choice($.ptr, $.ident, $.int, $.string, $.float, $.list),
 
-        _expr: $ => choice($.ptr, $.ident, $.int, $.string, $.float),
+        // ARMv7
+        list: $ => seq(
+          '{',
+          optional(seq($.reg, repeat(seq(choice(',', '-'), $.reg)), optional(','))),
+          '}'
+        ),
         ptr: $ =>
             choice(
                 seq(
@@ -70,11 +76,11 @@ module.exports = grammar({
                     $.int,
                     ']',
                 ),
-                // Aarch64
+                // Aarch64 and ARMv7
                 seq(
                     '[',
                     $.reg,
-                    optional(seq(',', $.int)),
+                    optional(seq(',', choice($.int, seq($.reg, optional(seq(',', seq($.word, $.int))))))),
                     ']',
                     optional('!'),
                 ),
@@ -110,6 +116,7 @@ module.exports = grammar({
             const _int = /-?([0-9][0-9_]*|(0x|\$)[0-9A-Fa-f][0-9A-Fa-f_]*|0b[01][01_]*)/
             return choice(
                 seq('#', token.immediate(_int)),
+                seq('#', _int),
                 _int,
             )
         },
@@ -118,7 +125,7 @@ module.exports = grammar({
 
         word: $ => /[a-zA-Z0-9_]+/,
         _reg: $ => /%?[a-z0-9]+/,
-        address: $ => /\$[a-zA-Z0-9_]+/, // GAS x86 address
+        address: $ => /[=\$][a-zA-Z0-9_]+/, // ARMv7 and GAS x86 address
         reg: $ => choice($._reg, $.word, $.address),
         meta_ident: $ => /\.[a-z_]+/,
         _ident: $ => /[a-zA-Z_0-9.]+/,

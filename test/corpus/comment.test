@@ -1,7 +1,7 @@
 ==========
 Line comment
 ==========
-; This is a comment 
+; This is a comment
 ---
 (program
     (line_comment))
@@ -19,25 +19,25 @@ MOVLPS ; This is an in-line comment
 ==========
 Inline comment with instr one reg arg, no space between
 ==========
-pushq %rbp; This is an in-line comment 
+pushq %rbp; This is an in-line comment
 ---
 (program
-    (instruction 
+    (instruction
         kind: (word)
         (ident (reg)))
     (line_comment))
 ==========
 Inline comment with instr one reg arg, space between
 ==========
-pushq %rbp ; This is an in-line comment 
+pushq %rbp ; This is an in-line comment
 ---
 (program
-    (instruction 
+    (instruction
         kind: (word)
         (ident (reg)))
     (line_comment))
 ==========
-Block comment 
+Block comment
 ==========
 /*
 *
