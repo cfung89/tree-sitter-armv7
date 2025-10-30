@@ -45,15 +45,16 @@ module.exports = grammar({
                 ),
             ),
         const: $ => seq('const', field('name', $.word), field('value', $._tc_expr)),
-        instruction: $ => seq(field('kind', $.word), choice(sep(',', $._expr), repeat($._tc_expr))),
+        instruction: $ => prec.left(1, seq(field('kind', $.word), choice(sep(',', $._expr), repeat($._tc_expr)))),
         _expr: $ => choice($.ptr, $.ident, $.int, $.string, $.float, $.list),
 
         // ARMv7
-        list: $ => seq(
-          '{',
-          optional(seq($.reg, repeat(seq(choice(',', '-'), $.reg)), optional(','))),
-          '}'
-        ),
+        list: $ =>
+            seq(
+                '{',
+                optional(seq($.reg, repeat(seq(choice(',', '-'), $.reg)), optional(','))),
+                '}'
+            ),
         ptr: $ =>
             choice(
                 seq(
@@ -80,9 +81,18 @@ module.exports = grammar({
                 seq(
                     '[',
                     $.reg,
-                    optional(seq(',', choice($.int, seq($.reg, optional(seq(',', seq($.word, $.int))))))),
+                    optional(seq(',', choice($.int, seq($.reg, optional(seq(',', seq($.instruction, $.int))))))),
                     ']',
                     optional('!'),
+                ),
+                prec.right(
+                    1,
+                    seq(
+                        '[',
+                        $.reg,
+                        ']',
+                        optional(seq(',', choice($.int, seq($.reg, optional(seq(',', seq($.instruction, $.int))))))),
+                    ),
                 ),
             ),
         // Turing Complete

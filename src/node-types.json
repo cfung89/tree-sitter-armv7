@@ -243,15 +243,15 @@
           "named": true
         },
         {
+          "type": "instruction",
+          "named": true
+        },
+        {
           "type": "int",
           "named": true
         },
         {
           "type": "reg",
-          "named": true
-        },
-        {
-          "type": "word",
           "named": true
         }
       ]

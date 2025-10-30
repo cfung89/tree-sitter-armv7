@@ -149,7 +149,7 @@ LDR A3, [A1, V2]
         (word)))))
 
 ==========
-Instruction -- Reg arg, address pointer with register offset and shift (ARMv7)
+Instruction -- Reg arg, address pointer with register offset and shift, pre-increment (ARMv7)
 ==========
 LDR A3, [A1, V2, LSL#2]!
 ---
@@ -164,7 +164,28 @@ LDR A3, [A1, V2, LSL#2]!
         (word))
       (reg
         (word))
-      (word)
+      (instruction
+        (word))
+      (int))))
+
+==========
+Instruction -- Reg arg, address pointer with register offset and shift, post-increment (ARMv7)
+==========
+LDR A3, [A2], V3, LSL#2
+---
+(program
+  (instruction
+    (word)
+    (ident
+      (reg
+        (word)))
+    (ptr
+      (reg
+        (word))
+      (reg
+        (word))
+      (instruction
+        (word))
       (int))))
 
 ==========
@@ -188,7 +209,7 @@ PUSH { V1, V2, V3-V5, LR }
         (word)))))
 
 ==========
-Instruction -- reg arg, address arg (ARMv7)
+Instruction -- Reg arg, address arg (ARMv7)
 ==========
 LDR A1, =addr
 ---
