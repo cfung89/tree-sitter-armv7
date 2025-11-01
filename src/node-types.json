@@ -88,6 +88,10 @@
           "named": true
         },
         {
+          "type": "list",
+          "named": true
+        },
+        {
           "type": "ptr",
           "named": true
         },
@@ -143,6 +147,21 @@
     "fields": {}
   },
   {
+    "type": "list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "reg",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "meta",
     "named": true,
     "fields": {
@@ -183,7 +202,6 @@
   {
     "type": "program",
     "named": true,
-    "root": true,
     "fields": {},
     "children": {
       "multiple": true,
@@ -459,7 +477,15 @@
     "named": true
   },
   {
+    "type": "{",
+    "named": false
+  },
+  {
     "type": "|",
+    "named": false
+  },
+  {
+    "type": "}",
     "named": false
   }
 ]
