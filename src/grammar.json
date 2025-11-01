@@ -1,5 +1,4 @@
 {
-  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "asm",
   "rules": {
     "program": {
@@ -918,7 +917,7 @@
     },
     "address": {
       "type": "PATTERN",
-      "value": "\\$[a-zA-Z0-9_]+"
+      "value": "[=\\$][a-zA-Z0-9_]+"
     },
     "reg": {
       "type": "CHOICE",
